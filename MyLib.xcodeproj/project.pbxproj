@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		51BDDEA92DB3D3F100706F17 /* MyLib.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyLib.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		51BDDEA92DB3D3F100706F17 /* StarBooks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StarBooks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -40,7 +40,7 @@
 		51BDDEAA2DB3D3F100706F17 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				51BDDEA92DB3D3F100706F17 /* MyLib.app */,
+				51BDDEA92DB3D3F100706F17 /* StarBooks.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -48,9 +48,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		51BDDEA82DB3D3F100706F17 /* MyLib */ = {
+		51BDDEA82DB3D3F100706F17 /* StarBooks */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 51BDDEB42DB3D3F300706F17 /* Build configuration list for PBXNativeTarget "MyLib" */;
+			buildConfigurationList = 51BDDEB42DB3D3F300706F17 /* Build configuration list for PBXNativeTarget "StarBooks" */;
 			buildPhases = (
 				51BDDEA52DB3D3F100706F17 /* Sources */,
 				51BDDEA62DB3D3F100706F17 /* Frameworks */,
@@ -63,11 +63,11 @@
 			fileSystemSynchronizedGroups = (
 				51BDDEAB2DB3D3F100706F17 /* MyLib */,
 			);
-			name = MyLib;
+			name = StarBooks;
 			packageProductDependencies = (
 			);
 			productName = MyLib;
-			productReference = 51BDDEA92DB3D3F100706F17 /* MyLib.app */;
+			productReference = 51BDDEA92DB3D3F100706F17 /* StarBooks.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -99,7 +99,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				51BDDEA82DB3D3F100706F17 /* MyLib */,
+				51BDDEA82DB3D3F100706F17 /* StarBooks */,
 			);
 		};
 /* End PBXProject section */
@@ -251,8 +251,10 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 34427X7QNX;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = StarBooks;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -278,8 +280,10 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 34427X7QNX;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = StarBooks;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -310,7 +314,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		51BDDEB42DB3D3F300706F17 /* Build configuration list for PBXNativeTarget "MyLib" */ = {
+		51BDDEB42DB3D3F300706F17 /* Build configuration list for PBXNativeTarget "StarBooks" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				51BDDEB52DB3D3F300706F17 /* Debug */,
