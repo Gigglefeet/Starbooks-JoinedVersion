@@ -251,26 +251,23 @@ struct PopulatedHangarView: View {
             ForEach(sortedHangar) { book in
                 HangarBookRowView(
                     book: book,
-                    moveFromHangarToArchives: moveFromHangarToArchives,
-                    moveFromHangarToWishlist: moveFromHangarToWishlist,
-                    setHangarRating: setHangarRating,
-                    deleteAction: handleBookDeletion, // Use our wrapper function
-                    bookToEdit: $bookToEdit,
-                    isEditMode: false // Always use normal mode since we removed the edit button
+                    moveFromHangarToArchivesAction: self.moveFromHangarToArchives,
+                    setHangarRatingAction: self.setHangarRating,
+                    moveFromHangarToWishlistAction: self.moveFromHangarToWishlist,
+                    bookToEdit: $bookToEdit
                 )
             }
-            .onMove(perform: sortOrder == .defaultOrder ? reorderHangar : nil)
-            .onDelete(perform: handleSortedDeletion) // Map the indices if needed
+            .onMove(perform: reorderHangar)
+            .onDelete(perform: handleSortedDeletion)
         }
-        // Use a binding to the EditMode state but we'll never activate it
-        .environment(\.editMode, $editMode)
-        .scrollContentBackground(.hidden) // Keep list background transparent
-        .listStyle(.plain) // Use plain style for better transparency
-        .background(Color.clear) // Make sure it's transparent
-        .id(refreshID) // Force the list to re-render when the refreshID changes
-        // Remove the bottom toolbar since there's no edit mode
+        .id(refreshID) // Add ID for forcing refresh after delete
+        .listStyle(.plain)
+        .background(Color.clear)
         .navigationTitle("In The Hangar")
         .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                EditButton()
+            }
             ToolbarItem(placement: .navigationBarTrailing) {
                 Menu {
                     Picker("Sort Order", selection: $sortOrder) {
@@ -280,15 +277,13 @@ struct PopulatedHangarView: View {
                     }
                 } label: {
                     Label("Sort", systemImage: "arrow.up.arrow.down.circle")
-                        .foregroundColor(.cyan) // Match theme
                 }
             }
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
                     showingSelectWishlistSheet = true
                 } label: {
-                    Label("Add Book", systemImage: "plus.circle.fill")
-                        .foregroundColor(.cyan) // Match theme
+                    Label("Add from Wishlist", systemImage: "plus.circle.fill")
                 }
                 .disabled(selectableWishlist.isEmpty)
             }

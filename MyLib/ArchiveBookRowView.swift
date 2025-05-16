@@ -39,10 +39,8 @@ struct ArchiveBookRowView: View {
                         size: .caption
                     )
                     .onTapGesture {
-                        withAnimation {
-                            let newRating = (starIndex == book.rating) ? 0 : starIndex
-                            setRatingAction(book, newRating)
-                        }
+                        let newRating = (starIndex == book.rating) ? 0 : starIndex
+                        setRatingAction(book, newRating)
                     }
                 }
             }

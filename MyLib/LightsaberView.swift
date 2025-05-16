@@ -54,13 +54,11 @@ struct LightsaberView: View {
             // Blade with animation
             Capsule()
                 .fill(isLit ? color : Color.gray.opacity(0.3))
-                .frame(width: isLit ? bladeLength : 1, height: bladeWidth) // Contract when off
+                .frame(width: bladeLength, height: bladeWidth) // Consistent width
                 .opacity(isLit ? 1.0 : 0.5)
                 // Add glow effect when lit with animation
                 .shadow(color: isLit ? color.opacity(0.7 * glowIntensity) : .clear,
                        radius: isLit ? 2 * CGFloat(glowIntensity) : 0)
-                // Add ignition animation
-                .animation(.interpolatingSpring(stiffness: 170, damping: 15), value: isLit)
             
             // Hilt
             RoundedRectangle(cornerRadius: 1)
