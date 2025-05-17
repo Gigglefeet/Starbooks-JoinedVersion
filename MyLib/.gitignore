@@ -1,0 +1,41 @@
+# macOS
+.DS_Store
+
+# Build products
+build/
+DerivedData/
+
+# Swift Package Manager
+.swiftpm/
+Packages/
+
+# User-specific Xcode files (often XML)
+*.xcuserdatad/
+*.xccheckout
+*.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/
+*.xcodeproj/project.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings
+*.xcodeproj/xcuserdata/
+
+# Local Swift Package Manager configuration
+/.swiftpm/xcode/package.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+
+# Carthage
+Carthage/Build
+Carthage/Checkouts
+
+# CocoaPods
+Pods/
+Podfile.lock
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+
+# Generated localization files
+*.stringsdict 
+
+# IDE specific files
+# JetBrains IDEs (e.g., IntelliJ, AppCode)
+../.idea/ 
