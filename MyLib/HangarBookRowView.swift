@@ -83,16 +83,16 @@ struct HangarBookRowView: View {
         @State var anotherBook = Book(title: "Droid Maintenance 101", author: "Industrial Automaton", rating: 0)
         @State var editingBook: Book? = nil
 
-        func previewMoveToArchives(book: Book) { print("PREVIEW HANGAR ROW: Move '\(book.title)' to Archives. Rating: \(book.rating)") }
+        func previewMoveToArchives(book: Book) { /* print("PREVIEW HANGAR ROW: Move '\(book.title)' to Archives. Rating: \(book.rating)") */ }
         func previewSetRating(book: Book, rating: Int) {
             if book.id == sampleBookCurrentlyReading.id {
                 sampleBookCurrentlyReading.rating = rating
             } else if book.id == anotherBook.id {
                 anotherBook.rating = rating
             }
-            print("PREVIEW HANGAR ROW: Set rating for '\(book.title)' to \(rating)")
+            // print("PREVIEW HANGAR ROW: Set rating for '\(book.title)' to \(rating)")
         }
-        func previewMoveToWishlist(book: Book) { print("PREVIEW HANGAR ROW: Move '\(book.title)' to Wishlist.")}
+        func previewMoveToWishlist(book: Book) { /* print("PREVIEW HANGAR ROW: Move '\(book.title)' to Wishlist.") */}
 
         var body: some View {
             List {

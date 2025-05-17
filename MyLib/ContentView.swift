@@ -143,7 +143,7 @@ struct ContentView: View {
         if let index = dataStore.holocronWishlist.firstIndex(where: { $0.id == book.id }) { // Use DataStore
             dataStore.holocronWishlist.remove(at: index) // Use DataStore
         } else {
-             print("ERROR markAsRead: Failed to find book in wishlist to remove. Rolling back.")
+             // print("ERROR markAsRead: Failed to find book in wishlist to remove. Rolling back.")
              dataStore.jediArchives.removeAll(where: { $0.id == book.id}) // Use DataStore
         }
     }
@@ -154,21 +154,21 @@ struct ContentView: View {
             let validatedRating = max(0, min(5, newRating))
             dataStore.jediArchives[index].rating = validatedRating // Use DataStore
         } else {
-             print("ERROR setRating: Book not found in archives.")
+             // print("ERROR setRating: Book not found in archives.")
         }
     }
 
     func markAsUnread(book: Book) {
-        print("DEBUG markAsUnread: Moving ID=\(book.id.uuidString) back to wishlist")
+        // print("DEBUG markAsUnread: Moving ID=\(book.id.uuidString) back to wishlist")
         // Find and remove from archives
         if let index = dataStore.jediArchives.firstIndex(where: { $0.id == book.id }) {
             let bookToMove = dataStore.jediArchives.remove(at: index)
             // Add back to wishlist (rating is preserved from archives)
             // ** NOTE: This goes to WISHLIST as per clarification **
             dataStore.holocronWishlist.append(bookToMove)
-            print("DEBUG markAsUnread: Move successful.")
+            // print("DEBUG markAsUnread: Move successful.")
         } else {
-            print("ERROR markAsUnread: Book not found in archives to move back.")
+            // print("ERROR markAsUnread: Book not found in archives to move back.")
         }
     }
 
@@ -179,7 +179,7 @@ struct ContentView: View {
             let bookToMove = dataStore.holocronWishlist.remove(at: index)
             dataStore.inTheHangar.append(bookToMove)
         } else {
-            print("ERROR moveToHangarFromWishlist: Book not found in wishlist.")
+            // print("ERROR moveToHangarFromWishlist: Book not found in wishlist.")
         }
     }
 
@@ -189,7 +189,7 @@ struct ContentView: View {
             // Rating is preserved when moving from Archives to Hangar
             dataStore.inTheHangar.append(bookToMove)
         } else {
-            print("ERROR moveToHangarFromArchives: Book not found in archives.")
+            // print("ERROR moveToHangarFromArchives: Book not found in archives.")
         }
     }
 
@@ -199,7 +199,7 @@ struct ContentView: View {
             // Rating is preserved when moving from Hangar to Archives
             dataStore.jediArchives.append(bookToMove)
         } else {
-            print("ERROR moveFromHangarToArchives: Book not found in hangar.")
+            // print("ERROR moveFromHangarToArchives: Book not found in hangar.")
         }
     }
 
@@ -208,7 +208,7 @@ struct ContentView: View {
             let validatedRating = max(0, min(5, newRating))
             dataStore.inTheHangar[index].rating = validatedRating
         } else {
-            print("ERROR setHangarRating: Book not found in hangar.")
+            // print("ERROR setHangarRating: Book not found in hangar.")
         }
     }
 
@@ -222,25 +222,25 @@ struct ContentView: View {
             // Rating is preserved when moving from Hangar to Wishlist
             dataStore.holocronWishlist.append(bookToMove)
         } else {
-            print("ERROR moveFromHangarToWishlist: Book not found in hangar.")
+            // print("ERROR moveFromHangarToWishlist: Book not found in hangar.")
         }
     }
 
     // Function to delete books from the hangar
     func deleteFromHangar(at offsets: IndexSet) {
-        print("DEBUG: ContentView.deleteFromHangar - Deleting at offsets: \(offsets)")
+        // print("DEBUG: ContentView.deleteFromHangar - Deleting at offsets: \(offsets)")
         let count = dataStore.inTheHangar.count
         
         // Ensure we're on the main thread
         DispatchQueue.main.async {
             dataStore.inTheHangar.remove(atOffsets: offsets)
-            print("DEBUG: ContentView.deleteFromHangar - Deletion completed. Books before: \(count), after: \(dataStore.inTheHangar.count)")
+            // print("DEBUG: ContentView.deleteFromHangar - Deletion completed. Books before: \(count), after: \(dataStore.inTheHangar.count)")
         }
     }
     
     // Additional function to delete a book by ID
     func deleteBookFromHangar(book: Book) {
-        print("DEBUG: ContentView.deleteBookFromHangar - Attempting to delete book \(book.title) with ID \(book.id)")
+        // print("DEBUG: ContentView.deleteBookFromHangar - Attempting to delete book \(book.title) with ID \(book.id)")
         let count = dataStore.inTheHangar.count
         
         // Ensure all UI operations happen on the main thread
@@ -249,16 +249,16 @@ struct ContentView: View {
             if let index = self.dataStore.inTheHangar.firstIndex(where: { $0.id == book.id }) {
                 // Use withAnimation(.none) to avoid glitches - fix the unused result warning
                 self.dataStore.inTheHangar.remove(at: index)
-                print("DEBUG: ContentView.deleteBookFromHangar - Successfully deleted book at index \(index). Books before: \(count), after: \(self.dataStore.inTheHangar.count)")
+                // print("DEBUG: ContentView.deleteBookFromHangar - Successfully deleted book at index \(index). Books before: \(count), after: \(self.dataStore.inTheHangar.count)")
             } else {
-                print("ERROR: ContentView.deleteBookFromHangar - Failed to find book ID \(book.id) in hangar for deletion")
+                // print("ERROR: ContentView.deleteBookFromHangar - Failed to find book ID \(book.id) in hangar for deletion")
                 
-                // Fallback solution if index can't be found - try to remove by finding a matching book
+                // Fallback solution if index can't be found - try to remove by matching a book
                 let matchingBooks = self.dataStore.inTheHangar.filter { $0.id == book.id }
                 if !matchingBooks.isEmpty {
-                    print("DEBUG: ContentView.deleteBookFromHangar - Attempting alternative deletion method")
+                    // print("DEBUG: ContentView.deleteBookFromHangar - Attempting alternative deletion method")
                     self.dataStore.inTheHangar.removeAll(where: { $0.id == book.id })
-                    print("DEBUG: ContentView.deleteBookFromHangar - Alternative deletion completed. Books after: \(self.dataStore.inTheHangar.count)")
+                    // print("DEBUG: ContentView.deleteBookFromHangar - Alternative deletion completed. Books after: \(self.dataStore.inTheHangar.count)")
                 }
             }
         }
@@ -276,25 +276,25 @@ struct ContentView: View {
 
     // Function to delete books from the wishlist
     func deleteFromWishlist(at offsets: IndexSet) {
-        print("DEBUG: ContentView.deleteFromWishlist - Deleting at offsets: \(offsets)")
+        // print("DEBUG: ContentView.deleteFromWishlist - Deleting at offsets: \(offsets)")
         let count = dataStore.holocronWishlist.count
         
         // Ensure we're on the main thread
         DispatchQueue.main.async {
             dataStore.holocronWishlist.remove(atOffsets: offsets)
-            print("DEBUG: ContentView.deleteFromWishlist - Deletion completed. Books before: \(count), after: \(dataStore.holocronWishlist.count)")
+            // print("DEBUG: ContentView.deleteFromWishlist - Deletion completed. Books before: \(count), after: \(dataStore.holocronWishlist.count)")
         }
     }
 
     // Function to delete books from the archives
     func deleteFromArchives(at offsets: IndexSet) {
-        print("DEBUG: ContentView.deleteFromArchives - Deleting at offsets: \(offsets)")
+        // print("DEBUG: ContentView.deleteFromArchives - Deleting at offsets: \(offsets)")
         let count = dataStore.jediArchives.count
         
         // Ensure we're on the main thread
         DispatchQueue.main.async {
             dataStore.jediArchives.remove(atOffsets: offsets)
-            print("DEBUG: ContentView.deleteFromArchives - Deletion completed. Books before: \(count), after: \(dataStore.jediArchives.count)")
+            // print("DEBUG: ContentView.deleteFromArchives - Deletion completed. Books before: \(count), after: \(dataStore.jediArchives.count)")
         }
     }
 }

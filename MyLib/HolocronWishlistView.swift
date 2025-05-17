@@ -107,11 +107,11 @@ struct HolocronWishlistView: View {
             Book(title: "C Book", author: "Author P3")
         ]
 
-        func previewMarkRead(book: Book) { print("PREVIEW: Mark Read '\(book.title)'") }
-        func previewMoveToHangar(book: Book) { print("PREVIEW: Move '\(book.title)' to Hangar") }
+        func previewMarkRead(book: Book) { /* print("PREVIEW: Mark Read '\(book.title)'") */ }
+        func previewMoveToHangar(book: Book) { /* print("PREVIEW: Move '\(book.title)' to Hangar") */ }
         func previewDelete(at offsets: IndexSet) {
             sampleBooks.remove(atOffsets: offsets)
-            print("PREVIEW: Delete books at offsets \(offsets)")
+            // print("PREVIEW: Delete books at offsets \(offsets)")
         }
 
 

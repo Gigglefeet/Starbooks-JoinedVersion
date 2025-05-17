@@ -156,21 +156,21 @@ struct JediArchivesView: View {
         func previewSetRating(book: Book, newRating: Int) {
             if let index = previewList.firstIndex(where: { $0.id == book.id }) {
                 previewList[index].rating = max(0, min(5, newRating))
-                 print("PREVIEW: Set rating for '\(previewList[index].title)' to \(previewList[index].rating)")
+                 // print("PREVIEW: Set rating for '\(previewList[index].title)' to \(previewList[index].rating)")
             }
         }
         func previewMarkUnread(book: Book) {
             previewList.removeAll(where: { $0.id == book.id })
-            print("PREVIEW: Moved '\(book.title)' to Wishlist (Simulated)")
+            // print("PREVIEW: Moved '\(book.title)' to Wishlist (Simulated)")
         }
          func previewMoveToHangar(book: Book) {
             previewList.removeAll(where: { $0.id == book.id })
-            print("PREVIEW: Moved '\(book.title)' to Hangar (Simulated)")
+            // print("PREVIEW: Moved '\(book.title)' to Hangar (Simulated)")
          }
          
          func previewDeleteArchives(at offsets: IndexSet) {
             previewList.remove(atOffsets: offsets)
-            print("PREVIEW: Deleted books at offsets \(offsets)")
+            // print("PREVIEW: Deleted books at offsets \(offsets)")
          }
 
         var body: some View {

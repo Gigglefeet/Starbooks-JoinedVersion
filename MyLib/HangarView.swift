@@ -230,7 +230,7 @@ struct PopulatedHangarView: View {
                 }
             }
             
-            print("DEBUG: Mapped sorted indices \(offsets) to original indices \(originalIndices)")
+            // print("DEBUG: Mapped sorted indices \(offsets) to original indices \(originalIndices)")
             withAnimation(.none) {
                 deleteFromHangar(originalIndices)
             }
@@ -311,7 +311,7 @@ struct PopulatedHangarView: View {
             if let index = previewHangar.firstIndex(where: { $0.id == book.id }) {
                 let movedBook = previewHangar.remove(at: index)
                 previewArchives.append(movedBook)
-                print("PREVIEW: Moved '\(movedBook.title)' to Archives")
+                // print("PREVIEW: Moved '\(movedBook.title)' to Archives")
             }
         }
         
@@ -319,7 +319,7 @@ struct PopulatedHangarView: View {
             if let index = previewHangar.firstIndex(where: { $0.id == book.id }) {
                 let movedBook = previewHangar.remove(at: index)
                 previewWishlist.append(movedBook)
-                print("PREVIEW: Moved '\(movedBook.title)' to Wishlist")
+                // print("PREVIEW: Moved '\(movedBook.title)' to Wishlist")
             }
         }
 
@@ -327,32 +327,32 @@ struct PopulatedHangarView: View {
             if let index = previewHangar.firstIndex(where: { $0.id == book.id }) {
                  let validatedRating = max(0, min(5, rating))
                 previewHangar[index].rating = validatedRating
-                print("PREVIEW: Set rating for '\(previewHangar[index].title)' to \(validatedRating)")
+                // print("PREVIEW: Set rating for '\(previewHangar[index].title)' to \(validatedRating)")
             }
         }
 
         func previewReorder(from source: IndexSet, to destination: Int) {
              previewHangar.move(fromOffsets: source, toOffset: destination)
-             print("PREVIEW: Reordered hangar list")
+             // print("PREVIEW: Reordered hangar list")
         }
 
         func previewMoveToHangar(book: Book) {
             if let index = previewWishlist.firstIndex(where: {$0.id == book.id}) {
                 let movedBook = previewWishlist.remove(at: index)
                 previewHangar.append(movedBook)
-                print("PREVIEW: Moved '\(movedBook.title)' from Wishlist to Hangar")
+                // print("PREVIEW: Moved '\(movedBook.title)' from Wishlist to Hangar")
             }
         }
 
         func previewDeleteFromHangar(at offsets: IndexSet) {
             previewHangar.remove(atOffsets: offsets)
-            print("PREVIEW: Deleted book(s) from Hangar")
+            // print("PREVIEW: Deleted book(s) from Hangar")
         }
         
         func previewDeleteBookFromHangar(book: Book) {
             if let index = previewHangar.firstIndex(where: { $0.id == book.id }) {
                 previewHangar.remove(at: index)
-                print("PREVIEW: Deleted book '\(book.title)' from Hangar")
+                // print("PREVIEW: Deleted book '\(book.title)' from Hangar")
             }
         }
 

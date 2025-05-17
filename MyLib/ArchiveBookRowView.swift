@@ -102,10 +102,10 @@ struct ArchiveBookRowView: View {
         func previewSetRating(book: Book, rating: Int) {
             let validatedRating = max(0, min(5, rating))
             sampleBook.rating = validatedRating
-             print("PREVIEW ROW ARCHIVE: Set rating for '\(book.title)' to \(validatedRating)")
+             // print("PREVIEW ROW ARCHIVE: Set rating for '\(book.title)' to \(validatedRating)")
         }
-        func previewMarkUnread(book: Book) { print("PREVIEW ROW ARCHIVE: Move '\(book.title)' to Wishlist") }
-        func previewMoveToHangar(book: Book) { print("PREVIEW ROW ARCHIVE: Move '\(book.title)' to Hangar") }
+        func previewMarkUnread(book: Book) { /* print("PREVIEW ROW ARCHIVE: Move '\(book.title)' to Wishlist") */ }
+        func previewMoveToHangar(book: Book) { /* print("PREVIEW ROW ARCHIVE: Move '\(book.title)' to Hangar") */ }
 
 
         var body: some View {

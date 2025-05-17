@@ -40,7 +40,7 @@ class DataStore: ObservableObject {
             let encodedWishlist = try encoder.encode(holocronWishlist)
             UserDefaults.standard.set(encodedWishlist, forKey: wishlistKey)
         } catch {
-            print("ERROR DataStore saveData: Failed to encode/save wishlist. Error: \(error.localizedDescription)")
+            // print("ERROR DataStore saveData: Failed to encode/save wishlist. Error: \(error.localizedDescription)")
         }
 
         // Save Archives with error handling
@@ -48,7 +48,7 @@ class DataStore: ObservableObject {
             let encodedArchives = try encoder.encode(jediArchives)
             UserDefaults.standard.set(encodedArchives, forKey: archivesKey)
         } catch {
-            print("ERROR DataStore saveData: Failed to encode/save archives. Error: \(error.localizedDescription)")
+            // print("ERROR DataStore saveData: Failed to encode/save archives. Error: \(error.localizedDescription)")
         }
 
         // Save Hangar list with error handling
@@ -56,7 +56,7 @@ class DataStore: ObservableObject {
             let encodedHangar = try encoder.encode(inTheHangar)
             UserDefaults.standard.set(encodedHangar, forKey: hangarKey)
         } catch {
-             print("ERROR DataStore saveData: Failed to encode/save hangar list. Error: \(error.localizedDescription)")
+             // print("ERROR DataStore saveData: Failed to encode/save hangar list. Error: \(error.localizedDescription)")
         }
     }
 
@@ -69,7 +69,7 @@ class DataStore: ObservableObject {
                 let decodedWishlist = try decoder.decode([Book].self, from: savedWishlist)
                 self.holocronWishlist = decodedWishlist
             } catch {
-                print("ERROR DataStore loadData: Failed to decode wishlist. Error: \(error.localizedDescription)")
+                // print("ERROR DataStore loadData: Failed to decode wishlist. Error: \(error.localizedDescription)")
                 self.holocronWishlist = [] // Reset on failure
             }
         } else {
@@ -82,7 +82,7 @@ class DataStore: ObservableObject {
                  let decodedArchives = try decoder.decode([Book].self, from: savedArchives)
                  self.jediArchives = decodedArchives
              } catch {
-                 print("ERROR DataStore loadData: Failed to decode archives. Error: \(error.localizedDescription)")
+                 // print("ERROR DataStore loadData: Failed to decode archives. Error: \(error.localizedDescription)")
                  self.jediArchives = [] // Reset on failure
              }
         } else {
@@ -95,7 +95,7 @@ class DataStore: ObservableObject {
                  let decodedHangar = try decoder.decode([Book].self, from: savedHangar)
                  self.inTheHangar = decodedHangar
              } catch {
-                 print("ERROR DataStore loadData: Failed to decode hangar list. Error: \(error.localizedDescription)")
+                 // print("ERROR DataStore loadData: Failed to decode hangar list. Error: \(error.localizedDescription)")
                  self.inTheHangar = [] // Reset on failure
              }
         } else {

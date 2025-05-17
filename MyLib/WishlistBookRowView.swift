@@ -86,8 +86,8 @@ struct WishlistBookRowView: View {
         @State var sampleBook = Book(title: "Wishlist Book", author: "Author W", notes: "Some notes", rating: 2) // Fixed parameter order
         @State var editingBook: Book? = nil
 
-        func previewMarkRead(book: Book) { print("PREVIEW ROW: Mark Read '\(book.title)'") }
-        func previewMoveToHangar(book: Book) { print("PREVIEW ROW: Move '\(book.title)' to Hangar") }
+        func previewMarkRead(book: Book) { /* print("PREVIEW ROW: Mark Read '\(book.title)'") */ }
+        func previewMoveToHangar(book: Book) { /* print("PREVIEW ROW: Move '\(book.title)' to Hangar") */ }
 
         var body: some View {
             List {

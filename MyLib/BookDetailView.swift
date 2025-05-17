@@ -111,7 +111,7 @@ struct BookDetailView: View {
                 rating: 4
             ),
             markAsReadAction: { book in
-                print("PREVIEW: Marked \(book.title) as read")
+                // print("PREVIEW: Marked \(book.title) as read")
             }
         )
     }
