@@ -38,4 +38,6 @@ fastlane/test_output
 
 # IDE specific files
 # JetBrains IDEs (e.g., IntelliJ, AppCode)
-../.idea/ 
+../.idea/
+
+../.idea/.xml
