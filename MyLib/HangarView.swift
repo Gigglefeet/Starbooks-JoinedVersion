@@ -148,9 +148,10 @@ struct EmptyHangarView: View {
     var body: some View {
         VStack {
             Spacer()
-            Image(systemName: "airplane.circle.fill") // Placeholder Icon
-                .font(.largeTitle)
-                .foregroundColor(.cyan)
+            Image("falcon_logo") // Use custom logo
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 80, height: 80) // Slightly smaller for empty view
                 .padding(.bottom, 5)
             Text("Hangar is empty.")
                 .font(.headline)
