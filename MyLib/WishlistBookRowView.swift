@@ -53,7 +53,7 @@ struct WishlistBookRowView: View {
             Button(action: {
                 moveToHangarAction(book)
             }) {
-                Label("Start Reading", systemImage: "airplane.circle.fill")
+                Label("Start Reading", image: "falcon_logo")
             }
         }
         .swipeActions(edge: .leading, allowsFullSwipe: false) { // Mark Read swipe (Keep on leading)
@@ -72,8 +72,8 @@ struct WishlistBookRowView: View {
              Button {
                  moveToHangarAction(book)
              } label: {
-                 // Using the airplane icon for Hangar
-                 Label("Start Reading", systemImage: "airplane.circle.fill")
+                 // Using the Millennium Falcon icon for Hangar
+                 Label("Start Reading", image: "falcon_logo")
              }
              .tint(.cyan) // Use a distinct color
         }
