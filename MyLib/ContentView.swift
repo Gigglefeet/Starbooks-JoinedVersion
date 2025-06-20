@@ -229,19 +229,17 @@ struct ContentView: View {
     // Function to delete books from the hangar
     func deleteFromHangar(at offsets: IndexSet) {
         // print("DEBUG: ContentView.deleteFromHangar - Deleting at offsets: \(offsets)")
-        let count = dataStore.inTheHangar.count
         
         // Ensure we're on the main thread
         DispatchQueue.main.async {
             dataStore.inTheHangar.remove(atOffsets: offsets)
-            // print("DEBUG: ContentView.deleteFromHangar - Deletion completed. Books before: \(count), after: \(dataStore.inTheHangar.count)")
+            // print("DEBUG: ContentView.deleteFromHangar - Deletion completed. Books after: \(dataStore.inTheHangar.count)")
         }
     }
     
     // Additional function to delete a book by ID
     func deleteBookFromHangar(book: Book) {
         // print("DEBUG: ContentView.deleteBookFromHangar - Attempting to delete book \(book.title) with ID \(book.id)")
-        let count = dataStore.inTheHangar.count
         
         // Ensure all UI operations happen on the main thread
         DispatchQueue.main.async {
@@ -249,7 +247,7 @@ struct ContentView: View {
             if let index = self.dataStore.inTheHangar.firstIndex(where: { $0.id == book.id }) {
                 // Use withAnimation(.none) to avoid glitches - fix the unused result warning
                 self.dataStore.inTheHangar.remove(at: index)
-                // print("DEBUG: ContentView.deleteBookFromHangar - Successfully deleted book at index \(index). Books before: \(count), after: \(self.dataStore.inTheHangar.count)")
+                // print("DEBUG: ContentView.deleteBookFromHangar - Successfully deleted book at index \(index). Books after: \(self.dataStore.inTheHangar.count)")
             } else {
                 // print("ERROR: ContentView.deleteBookFromHangar - Failed to find book ID \(book.id) in hangar for deletion")
                 
@@ -277,24 +275,22 @@ struct ContentView: View {
     // Function to delete books from the wishlist
     func deleteFromWishlist(at offsets: IndexSet) {
         // print("DEBUG: ContentView.deleteFromWishlist - Deleting at offsets: \(offsets)")
-        let count = dataStore.holocronWishlist.count
         
         // Ensure we're on the main thread
         DispatchQueue.main.async {
             dataStore.holocronWishlist.remove(atOffsets: offsets)
-            // print("DEBUG: ContentView.deleteFromWishlist - Deletion completed. Books before: \(count), after: \(dataStore.holocronWishlist.count)")
+            // print("DEBUG: ContentView.deleteFromWishlist - Deletion completed. Books after: \(dataStore.holocronWishlist.count)")
         }
     }
 
     // Function to delete books from the archives
     func deleteFromArchives(at offsets: IndexSet) {
         // print("DEBUG: ContentView.deleteFromArchives - Deleting at offsets: \(offsets)")
-        let count = dataStore.jediArchives.count
         
         // Ensure we're on the main thread
         DispatchQueue.main.async {
             dataStore.jediArchives.remove(atOffsets: offsets)
-            // print("DEBUG: ContentView.deleteFromArchives - Deletion completed. Books before: \(count), after: \(dataStore.jediArchives.count)")
+            // print("DEBUG: ContentView.deleteFromArchives - Deletion completed. Books after: \(dataStore.jediArchives.count)")
         }
     }
 }
