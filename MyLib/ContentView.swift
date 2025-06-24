@@ -6,124 +6,117 @@ struct ContentView: View {
 
     // State for presenting the add book sheet
     @State private var showingAddBookSheet = false
+    
+    // Search and filter state
+    @State private var searchText = ""
+    @State private var showingSearchResults = false
+    @State private var selectedFilter: FilterOption = .all
+    @State private var showingFilterMenu = false
+    
+    // Computed property for search results across all sections
+    var searchResults: (wishlist: [Book], hangar: [Book], archives: [Book]) {
+        if searchText.isEmpty {
+            return ([], [], [])
+        }
+        
+        let filteredWishlist = dataStore.holocronWishlist
+            .filtered(by: selectedFilter)
+            .filter { book in
+                book.title.localizedCaseInsensitiveContains(searchText) ||
+                book.author.localizedCaseInsensitiveContains(searchText) ||
+                book.notes.localizedCaseInsensitiveContains(searchText)
+            }
+        
+        let filteredHangar = dataStore.inTheHangar
+            .filtered(by: selectedFilter)
+            .filter { book in
+                book.title.localizedCaseInsensitiveContains(searchText) ||
+                book.author.localizedCaseInsensitiveContains(searchText) ||
+                book.notes.localizedCaseInsensitiveContains(searchText)
+            }
+        
+        let filteredArchives = dataStore.jediArchives
+            .filtered(by: selectedFilter)
+            .filter { book in
+                book.title.localizedCaseInsensitiveContains(searchText) ||
+                book.author.localizedCaseInsensitiveContains(searchText) ||
+                book.notes.localizedCaseInsensitiveContains(searchText)
+            }
+        
+        return (filteredWishlist, filteredHangar, filteredArchives)
+    }
 
     var body: some View {
         NavigationView {
-            VStack { // Main content VStack with starfield background
-                Spacer()
-
-                // Top Row: Wishlist and Archives side-by-side
-                HStack {
-                    Spacer() // Center the HStack contents
-
-                    // Navigation Link for Wishlist
-                    NavigationLink {
-                         HolocronWishlistView(
-                             holocronWishlist: $dataStore.holocronWishlist, // Use DataStore
-                             markAsReadAction: markAsRead,
-                             moveToHangarAction: moveToHangarFromWishlist, // Pass new action
-                             deleteAction: deleteFromWishlist, // Pass delete function
-                             reorderWishlist: reorderWishlist // Pass reordering function
-                         )
-                         .navigationHyperspaceEffect() // Apply our custom transition effect
-                    } label: { // Rebel Logo + Text Label
-                        VStack {
-                            Image("rebel_logo")
-                                .resizable().aspectRatio(contentMode: .fit).frame(width: 100, height: 100)
-                            Text("Jedi-Wishlist")
-                                 .font(.footnote).fontWeight(.bold).foregroundColor(.white)
-                                 .shadow(color: .black.opacity(0.7), radius: 2, x: 1, y: 1)
-                        }
-                        .padding()
-                    }
-
-                    Spacer() // Add space between the two top buttons
-
-                    // Navigation Link for Archives
-                    NavigationLink {
-                        JediArchivesView(
-                            jediArchives: $dataStore.jediArchives, // Use DataStore
-                            setRatingAction: setRating,
-                            markAsUnreadAction: markAsUnread, // Keep existing action
-                            moveToHangarAction: moveToHangarFromArchives, // Pass new action
-                            reorderArchives: reorderArchives, // Pass reordering function
-                            deleteAction: deleteFromArchives // Pass delete function
-                        )
-                        .navigationHyperspaceEffect() // Apply our custom transition effect
-                    } label: { // Empire Logo + Text Label
-                         VStack {
-                            Image("empire_logo")
-                                .resizable().aspectRatio(contentMode: .fit).frame(width: 100, height: 100)
-                            Text("Empire-Archives")
-                                 .font(.footnote).fontWeight(.bold).foregroundColor(.white)
-                                 .shadow(color: .black.opacity(0.7), radius: 2, x: 1, y: 1)
-                        }
-                         .padding()
-                    }
-
-                    Spacer() // Center the HStack contents
-                } // End of Top HStack
-
-                Spacer() // Push Hangar button down
-
-                // Middle Row: Hangar button
-                NavigationLink {
-                    // Destination will be HangarView (created in Phase 4)
-                    // Pass all required bindings and actions
-                     HangarView(
-                         inTheHangar: $dataStore.inTheHangar,
-                         moveFromHangarToArchives: moveFromHangarToArchives,
-                         setHangarRating: setHangarRating,
-                         reorderHangar: reorderHangar,
-                         moveToHangarFromWishlist: moveToHangarFromWishlist,
-                         moveFromHangarToWishlist: moveFromHangarToWishlist,
-                         deleteFromHangar: deleteFromHangar,
-                         deleteBookFromHangar: deleteBookFromHangar,
-                         wishlist: $dataStore.holocronWishlist
-                     )
-                     .navigationHyperspaceEffect() // Apply our custom transition effect
-                } label: {
-                    VStack {
-                        // Placeholder for Millennium Falcon
-                        Image("falcon_logo") // Use custom logo
-                             .resizable().aspectRatio(contentMode: .fit).frame(width: 100, height: 100)
-                        Text("In The Hangar")
-                            .font(.footnote).fontWeight(.bold).foregroundColor(.white)
-                            .shadow(color: .black.opacity(0.7), radius: 2, x: 1, y: 1)
-                    }
-                    .padding()
-                }
-
-                Spacer() // Push Add button down
-
-                // Bottom Row: Death Star Button to add books
-                Button {
-                    showingAddBookSheet = true
-                } label: {
-                    Image("death_star_icon")
-                        .resizable().aspectRatio(contentMode: .fit).frame(width: 80, height: 80)
-                        .padding(.bottom)
+            Group {
+                if !searchText.isEmpty {
+                    SearchResultsView(
+                        searchResults: searchResults,
+                        selectedFilter: selectedFilter,
+                        markAsReadAction: markAsRead,
+                        moveToHangarFromWishlist: moveToHangarFromWishlist,
+                        moveToHangarFromArchives: moveToHangarFromArchives,
+                        moveFromHangarToArchives: moveFromHangarToArchives,
+                        setRatingAction: setRating,
+                        setHangarRating: setHangarRating,
+                        markAsUnreadAction: markAsUnread,
+                        moveFromHangarToWishlist: moveFromHangarToWishlist,
+                        updateBookAction: updateBook
+                    )
+                } else {
+                    MainContentView(
+                        dataStore: dataStore,
+                        showingAddBookSheet: $showingAddBookSheet,
+                        markAsRead: markAsRead,
+                        moveToHangarFromWishlist: moveToHangarFromWishlist,
+                        moveToHangarFromArchives: moveToHangarFromArchives,
+                        moveFromHangarToArchives: moveFromHangarToArchives,
+                        setRating: setRating,
+                        setHangarRating: setHangarRating,
+                        reorderHangar: reorderHangar,
+                        moveFromHangarToWishlist: moveFromHangarToWishlist,
+                        deleteFromHangar: deleteFromHangar,
+                        deleteBookFromHangar: deleteBookFromHangar,
+                        deleteFromWishlist: deleteFromWishlist,
+                        reorderWishlist: reorderWishlist,
+                        markAsUnreadAction: markAsUnread,
+                        reorderArchives: reorderArchives,
+                        deleteFromArchives: deleteFromArchives
+                    )
                 }
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background( // Replace static starfield with animated one
-                StarfieldView(starCount: 150)
-                    .edgesIgnoringSafeArea(.all)
-                    .transition(AnyTransition.opacity.combined(with: .scale))
-            )
-            .sheet(isPresented: $showingAddBookSheet) { // Sheet to present AddBookView
-                 AddBookView { newBook in
-                     dataStore.holocronWishlist.append(newBook) // Add to DataStore
-                 }
-                 .environment(\.colorScheme, .dark)
+            .searchable(text: $searchText, prompt: "Search books...")
+            .onSubmit(of: .search) {
+                showingSearchResults = !searchText.isEmpty
             }
-            .toolbar { // Custom centered title
+            .onChange(of: searchText) { _ in
+                showingSearchResults = !searchText.isEmpty
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        showingFilterMenu = true
+                    } label: {
+                        Image(systemName: selectedFilter == .all ? "line.horizontal.3.decrease" : "line.horizontal.3.decrease.circle.fill")
+                            .foregroundColor(.white)
+                    }
+                }
                 ToolbarItem(placement: .principal) {
-                    Text("StarBooks Command")
-                        .font(.headline).foregroundColor(.white)
-                        .padding(.horizontal, 12).padding(.vertical, 6)
+                    Text(searchText.isEmpty ? "StarBooks Command" : "Search Results")
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
                         .background(Capsule().fill(Color.black.opacity(0.6)))
                 }
+            }
+            .confirmationDialog("Filter Books", isPresented: $showingFilterMenu) {
+                ForEach(FilterOption.allCases, id: \.self) { option in
+                    Button(option.rawValue) {
+                        selectedFilter = option
+                    }
+                }
+                Button("Cancel", role: .cancel) { }
             }
         }
         .environment(\.colorScheme, .dark) // Apply dark theme globally
@@ -291,6 +284,18 @@ struct ContentView: View {
         DispatchQueue.main.async {
             dataStore.jediArchives.remove(atOffsets: offsets)
             // print("DEBUG: ContentView.deleteFromArchives - Deletion completed. Books after: \(dataStore.jediArchives.count)")
+        }
+    }
+    
+    // Function to update a book across all sections
+    func updateBook(_ updatedBook: Book) {
+        // Find and update the book in whichever section it belongs to
+        if let index = dataStore.holocronWishlist.firstIndex(where: { $0.id == updatedBook.id }) {
+            dataStore.holocronWishlist[index] = updatedBook
+        } else if let index = dataStore.inTheHangar.firstIndex(where: { $0.id == updatedBook.id }) {
+            dataStore.inTheHangar[index] = updatedBook
+        } else if let index = dataStore.jediArchives.firstIndex(where: { $0.id == updatedBook.id }) {
+            dataStore.jediArchives[index] = updatedBook
         }
     }
 }
