@@ -61,8 +61,8 @@ struct ContentView: View {
                         moveToHangarFromWishlist: moveToHangarFromWishlist,
                         moveToHangarFromArchives: moveToHangarFromArchives,
                         moveFromHangarToArchives: moveFromHangarToArchives,
-                        setRatingAction: setRating,
-                        setHangarRating: setHangarRating,
+                        setRatingAction: { book, rating in setRating(for: book, to: rating) },
+                        setHangarRating: { book, rating in setHangarRating(for: book, to: rating) },
                         markAsUnreadAction: markAsUnread,
                         moveFromHangarToWishlist: moveFromHangarToWishlist,
                         updateBookAction: updateBook
