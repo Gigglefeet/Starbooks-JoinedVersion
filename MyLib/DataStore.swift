@@ -2,6 +2,8 @@ import Foundation
 import Combine // Needed for ObservableObject and @Published
 
 class DataStore: ObservableObject {
+    // Stats manager for tracking reading progress
+    @Published var statsManager = StatsManager()
     @Published var holocronWishlist: [Book] = [] {
         didSet {
             // Automatically save whenever the list changes

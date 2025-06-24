@@ -13,6 +13,10 @@ struct ContentView: View {
     @State private var selectedFilter: FilterOption = .all
     @State private var showingFilterMenu = false
     
+    // Achievement notifications
+    @State private var showingAchievementToast = false
+    @State private var currentAchievement: ReadingAchievement?
+    
     // Computed property for search results across all sections
     var searchResults: (wishlist: [Book], hangar: [Book], archives: [Book]) {
         if searchText.isEmpty {
@@ -89,10 +93,18 @@ struct ContentView: View {
             .onSubmit(of: .search) {
                 showingSearchResults = !searchText.isEmpty
             }
-            .onChange(of: searchText) { _ in
+            .onChange(of: searchText) { _, _ in
                 showingSearchResults = !searchText.isEmpty
             }
             .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    NavigationLink {
+                        StatsView(statsManager: dataStore.statsManager)
+                    } label: {
+                        Image(systemName: "chart.bar.fill")
+                            .foregroundColor(.white)
+                    }
+                }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
                         showingFilterMenu = true
@@ -110,14 +122,41 @@ struct ContentView: View {
                         .background(Capsule().fill(Color.black.opacity(0.6)))
                 }
             }
-            .confirmationDialog("Filter Books", isPresented: $showingFilterMenu) {
-                ForEach(FilterOption.allCases, id: \.self) { option in
-                    Button(option.rawValue) {
-                        selectedFilter = option
-                    }
-                }
-                Button("Cancel", role: .cancel) { }
-            }
+                         .confirmationDialog("Filter Books", isPresented: $showingFilterMenu) {
+                 ForEach(FilterOption.allCases, id: \.self) { option in
+                     Button(option.rawValue) {
+                         selectedFilter = option
+                     }
+                 }
+                 Button("Cancel", role: .cancel) { }
+             }
+             .overlay(alignment: .top) {
+                 if let achievement = currentAchievement {
+                     AchievementToastView(
+                         achievement: achievement,
+                         isShowing: $showingAchievementToast
+                     )
+                     .padding(.top, 100)
+                 }
+             }
+             .onReceive(dataStore.statsManager.$newAchievements) { achievements in
+                 if let newAchievement = achievements.first {
+                     currentAchievement = newAchievement
+                     withAnimation {
+                         showingAchievementToast = true
+                     }
+                     
+                     // Clear the achievement from the manager
+                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                         dataStore.statsManager.clearNewAchievements()
+                     }
+                 }
+             }
+             .onChange(of: showingAchievementToast) { _, isShowing in
+                 if !isShowing {
+                     currentAchievement = nil
+                 }
+             }
         }
         .environment(\.colorScheme, .dark) // Apply dark theme globally
         .navigationViewStyle(.stack) // Use stack navigation
@@ -145,7 +184,10 @@ struct ContentView: View {
         if let index = dataStore.jediArchives.firstIndex(where: { $0.id == book.id }) { // Use DataStore
             // Ensure rating is within 0-5 range
             let validatedRating = max(0, min(5, newRating))
+            let oldBook = dataStore.jediArchives[index]
             dataStore.jediArchives[index].rating = validatedRating // Use DataStore
+            // Track rating stats
+            dataStore.statsManager.bookRated(oldBook, rating: validatedRating)
         } else {
              // print("ERROR setRating: Book not found in archives.")
         }
@@ -171,6 +213,8 @@ struct ContentView: View {
         if let index = dataStore.holocronWishlist.firstIndex(where: { $0.id == book.id }) {
             let bookToMove = dataStore.holocronWishlist.remove(at: index)
             dataStore.inTheHangar.append(bookToMove)
+            // Track stats
+            dataStore.statsManager.bookMovedToHangar(bookToMove)
         } else {
             // print("ERROR moveToHangarFromWishlist: Book not found in wishlist.")
         }
@@ -181,6 +225,8 @@ struct ContentView: View {
             let bookToMove = dataStore.jediArchives.remove(at: index)
             // Rating is preserved when moving from Archives to Hangar
             dataStore.inTheHangar.append(bookToMove)
+            // Track stats
+            dataStore.statsManager.bookMovedToHangar(bookToMove)
         } else {
             // print("ERROR moveToHangarFromArchives: Book not found in archives.")
         }
@@ -191,6 +237,8 @@ struct ContentView: View {
             let bookToMove = dataStore.inTheHangar.remove(at: index)
             // Rating is preserved when moving from Hangar to Archives
             dataStore.jediArchives.append(bookToMove)
+            // Track stats for book completion
+            dataStore.statsManager.bookCompletedFromHangar(bookToMove)
         } else {
             // print("ERROR moveFromHangarToArchives: Book not found in hangar.")
         }
@@ -199,7 +247,10 @@ struct ContentView: View {
     func setHangarRating(for book: Book, to newRating: Int) {
         if let index = dataStore.inTheHangar.firstIndex(where: { $0.id == book.id }) {
             let validatedRating = max(0, min(5, newRating))
+            let oldBook = dataStore.inTheHangar[index]
             dataStore.inTheHangar[index].rating = validatedRating
+            // Track rating stats
+            dataStore.statsManager.bookRated(oldBook, rating: validatedRating)
         } else {
             // print("ERROR setHangarRating: Book not found in hangar.")
         }
