@@ -18,7 +18,7 @@ class StatsManager: ObservableObject {
             let encoded = try encoder.encode(stats)
             UserDefaults.standard.set(encoded, forKey: statsKey)
         } catch {
-            print("Failed to save stats: \(error)")
+            // Silent error handling for production
         }
     }
     
@@ -28,7 +28,7 @@ class StatsManager: ObservableObject {
             do {
                 stats = try decoder.decode(ReadingStats.self, from: data)
             } catch {
-                print("Failed to load stats: \(error)")
+                // Silent error handling for production
                 stats = ReadingStats()
             }
         }
